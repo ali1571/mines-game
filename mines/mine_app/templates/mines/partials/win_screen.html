@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes tada {
+            0% { transform: scale(1) rotate(0deg); }
+            10%, 20% { transform: scale(0.9) rotate(-3deg); }
+            30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+            40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .animate-tada {
+            animation: tada 1s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 p-4">
+
+    <!-- Gem Display Card -->
+    <div class="w-full max-w-sm mx-auto mb-4">
+        <div class="w-full aspect-square max-w-[200px] mx-auto bg-emerald-500 rounded-xl flex items-center justify-center animate-bounce shadow-[0_0_20px_rgba(16,185,129,1)]">
+            <span class="text-5xl sm:text-6xl">💎</span>
+        </div>
+    </div>
+
+    <!-- User Balance -->
+    <div class="text-center mb-4">
+        <span id="user-balance" class="text-white font-mono font-bold text-xl sm:text-2xl">
+            1,250
+        </span>
+    </div>
+
+    <!-- Game Overlay - Mobile Optimized -->
+    <div id="game-overlay" class="fixed inset-0 bg-emerald-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div class="text-center bg-slate-900 p-6 sm:p-8 md:p-12 rounded-3xl border-4 border-emerald-500 shadow-[0_0_50px_rgba(16,185,129,0.4)] w-full max-w-md mx-4">
+            <!-- Responsive heading -->
+            <h2 class="text-4xl sm:text-5xl md:text-7xl font-black text-emerald-400 mb-3 sm:mb-4 animate-tada">
+                JACKPOT!
+            </h2>
+
+            <!-- Message text -->
+            <p class="text-lg sm:text-xl md:text-2xl text-white mb-6 sm:mb-8">
+                <span class="text-emerald-400 font-bold underline">You won!</span>
+            </p>
+
+            <!-- Claim button -->
+            <button
+                onclick="window.location.reload()"
+                class="w-full bg-white text-black font-black py-3 sm:py-4 px-6 rounded-xl uppercase text-base sm:text-lg hover:bg-emerald-50 active:scale-95 transition-transform">
+                Claim Winnings
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>

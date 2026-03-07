@@ -1,0 +1,16 @@
+<div class="w-full h-full bg-red-600/30 border-2 border-red-500 rounded-xl flex items-center justify-center animate-ping">
+    <span class="text-3xl">💣</span>
+</div>
+
+<div id="game-overlay" hx-swap-oob="true" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50">
+    <div class="bg-slate-900 p-10 rounded-3xl border border-red-500/50 text-center shadow-2xl">
+        <h2 class="text-6xl font-black text-red-500 mb-4 animate-tada">BOOM!</h2>
+        <p class="text-slate-400 mb-8">You stepped on a mine.</p>
+
+        <button hx-post="{% url 'start_game' %}"
+                hx-target="#game-grid"
+                class="px-8 py-4 bg-white text-black font-bold rounded-xl hover:bg-red-500 hover:text-white transition-all">
+            TRY AGAIN
+        </button>
+    </div>
+</div>

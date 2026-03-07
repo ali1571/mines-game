@@ -1,0 +1,84 @@
+{# The ID and Classes here must match your board.html exactly #}
+<div id="game-grid"
+     hx-swap-oob="true"
+     class="grid grid-cols-3 gap-3 md:gap-4 w-full max-w-[320px] mx-auto">
+
+    {% for i in range %}
+        <div id="tile-{{ i }}" class="relative w-full aspect-square bg-slate-800 rounded-xl flex items-center justify-center overflow-hidden border border-slate-700/50 shadow-inner">
+            {% if revealed %}
+                {# REVEALED STATE #}
+                {% if i in mine_locations %}
+                    {# This is a mine #}
+                    <div class="absolute inset-0 {% if i == hit_id %}bg-red-600 animate-pulse{% else %}bg-red-900/50{% endif %} flex items-center justify-center animate-pop">
+                        <span class="text-2xl {% if i == hit_id %}text-4xl{% endif %}">💣</span>
+                        {# Only play sound if this was THE mine that was hit #}
+                        {% if i == hit_id %}
+                            <script>
+                                document.getElementById('sound-mine').currentTime = 0;
+                                document.getElementById('sound-mine').play();
+                            </script>
+                        {% endif %}
+                    </div>
+                {% elif i in revealed_tiles %}
+                    {# This is a gem that was found #}
+                    <div class="absolute inset-0 bg-emerald-500/30 flex items-center justify-center animate-pop">
+                        <span class="text-2xl">💎</span>
+                    </div>
+                {% else %}
+                    {# This is an unrevealed safe tile (shown during cashout) #}
+                    <div class="absolute inset-0 bg-emerald-200/30 flex items-center justify-center animate-pop">
+                        <span class="text-2xl">💎</span>
+                    </div>
+                {% endif %}
+
+            {% elif idle %}
+                {# BLANK STATE: Just an empty dark tile #}
+                <div class="w-full h-full bg-slate-900/40"></div>
+
+            {% elif restored %}
+                {# RESTORED GAME STATE: show found gems, keep others clickable #}
+                {% if i in revealed_tiles %}
+                    <div class="absolute inset-0 bg-emerald-500/30 flex items-center justify-center animate-pop">
+                        <span class="text-2xl">💎</span>
+                    </div>
+                {% else %}
+                    <button hx-post="{% url 'reveal_tile' i %}"
+                            hx-target="#tile-{{ i }}"
+                            hx-swap="innerHTML"
+                            class="w-full h-full hover:bg-slate-700 transition-all active:scale-90 flex items-center justify-center">
+                    </button>
+                {% endif %}
+
+            {% else %}
+                {# ACTIVE GAME BUTTONS #}
+                <button hx-post="{% url 'reveal_tile' i %}"
+                        hx-target="#tile-{{ i }}"
+                        hx-swap="innerHTML"
+                        class="w-full h-full hover:bg-slate-700 transition-all active:scale-90 flex items-center justify-center">
+                </button>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<div id="button-container" hx-swap-oob="true">
+    {% if revealed %}
+        <button hx-post="{% url 'reset_game' %}"
+                hx-target="#game-grid"
+                hx-swap="outerHTML"
+                onclick="document.getElementById('bet-error').innerHTML = '';"
+                class="w-full mt-6 py-4 bg-white hover:bg-slate-200 text-black font-black rounded-xl transition-all shadow-[0_4px_0_rgb(203,213,225)] active:shadow-none active:translate-y-1 uppercase tracking-tighter">
+            Play Again
+        </button>
+    {% else %}
+        <button hx-post="{% url 'start_game' %}"
+                hx-target="#game-grid"
+                hx-include="#bet_amount"
+                hx-indicator="#spinner"
+                class="relative w-full mt-6 py-2 bg-orange-500 hover:bg-orange-400 text-black font-black rounded-xl transition-all shadow-[0_4px_0_rgb(194,120,3)] active:shadow-none active:translate-y-1 uppercase flex justify-center items-center">
+
+            <span id="spinner" class="htmx-indicator absolute left-6 animate-spin border-2 border-black border-t-transparent rounded-full h-4 w-4"></span>
+            <span class="text-center">Play</span>
+        </button>
+    {% endif %}
+</div>

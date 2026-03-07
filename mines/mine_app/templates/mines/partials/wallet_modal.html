@@ -1,0 +1,126 @@
+<div id="game-overlay" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50">
+    <div class="bg-slate-900 p-8 rounded-3xl w-full max-w-md border border-slate-800 relative">
+
+        <button onclick="document.getElementById('game-overlay').remove()"
+                class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors text-xl">
+            ✕
+        </button>
+
+        <h2 class="text-2xl font-bold text-white mb-6">Wallet</h2>
+
+
+
+        <div class="mb-8 p-4 bg-slate-800/50 rounded-2xl border border-slate-700 space-y-4">
+            <div>
+                <p class="text-xs text-slate-500 uppercase font-black mb-1">Your Deposit ID</p>
+                <div class="flex items-center justify-between">
+                    <code class="text-orange-500 font-mono text-lg font-bold">{{ user.username }}</code>
+                    <button type="button" onclick="navigator.clipboard.writeText('{{ user.username }}')" class="text-[10px] bg-slate-700 px-2 py-1 rounded text-slate-300 hover:bg-slate-600 transition-colors">Copy</button>
+                </div>
+            </div>
+<!--https://wa.me/923558567771?text=Hello-->
+
+            <div class="pt-3 border-t border-slate-700">
+                <p class="text-xs text-slate-500 uppercase font-black mb-1">Deposit funds</p>
+
+                <a href="whatsapp://send?phone=923558567771&text=Hello%20MinesPro,%20mujhe%20Funds%20send%20the%20Karney%20Hain."
+                   class="flex items-center gap-3 p-3 bg-green-500/10 border border-green-500/30 rounded-xl hover:bg-green-500/20 hover:border-green-500/50 transition-all group">
+
+                    <div class="bg-green-500/20 p-2 rounded-lg group-hover:bg-green-500/30 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-green-500" viewBox="0 0 16 16">
+                          <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93a7.898 7.898 0 0 0-2.327-5.607zM7.994 14.52a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                        </svg>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-white font-bold uppercase tracking-tight">CLICK TO DEPOSIT</span>
+                        <span class="text-[9px] text-slate-500/80 font-medium font-bold">EASYPAISA JAZZCASH </span>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="pt-3 border-t border-slate-700 relative">
+                <label class="text-[10px] text-slate-500 uppercase font-bold mb-2 block">Identity Verification</label>
+
+                <button hx-get="{% url 'submit_kyc' %}"
+                        hx-target="#game-overlay"
+                        hx-swap="innerHTML"
+                        type="button"
+                        class="w-full flex items-center gap-3 p-3 bg-orange-500/10 border border-orange-500/30 rounded-xl hover:bg-orange-500/20 hover:border-orange-500/50 transition-all group">
+
+                    <div class="bg-slate-800 p-2 rounded-lg group-hover:bg-slate-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-orange-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                        </svg>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <span class="text-[10px] text-white font-bold uppercase tracking-tight">Complete KYC</span>
+                        <span class="text-[9px] text-slate-400 font-medium">Verify account to unlock withdrawals</span>
+                    </div>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3 h-3 text-slate-600 ml-auto group-hover:text-orange-500 transition-colors">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+
+                {% if message %}
+                    <div class="absolute -bottom-4 left-0 text-green-500 text-centre text-[12px] font-medium">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!--<div class="pt-3 border-t border-slate-700">
+                <label class="text-xs text-slate-500 uppercase font-black mb-1">kyc</label>
+
+                <label class="flex items-center gap-3 p-2 bg-slate-900/50 border border-slate-700 rounded-xl cursor-pointer hover:border-orange-500/50 transition-all relative">
+                    <div id="icon-container" class="bg-slate-800 p-2 rounded-lg">
+                        <svg id="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-orange-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 9 9m-9-9v18" />
+                        </svg>
+                    </div>
+
+                    <span id="file-name" class="text-[10px] text-slate-400 font-medium truncate">Choose image...</span>
+
+                    <input type="file" name="deposit_receipt" id="deposit_receipt"
+                           accept="image/*"
+                           class="hidden"
+                           hx-post="{% url 'upload_receipt' %}"
+                           hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                           hx-encoding="multipart/form-data"
+                           hx-trigger="change"
+                           hx-swap="none"
+                           onchange="updateFileName(this)">
+                </label>
+            </div> -->
+        </div>
+
+        <form hx-post="{% url 'submit_withdrawal' %}" hx-target="#withdrawal-status">
+            {% csrf_token %}
+            <p class="text-xs text-slate-500 uppercase font-black mb-2">Withdraw Account</p>
+            <input type="text"
+                   name="withdrawID"
+                   required
+                   placeholder="Enter Account Number"
+                   class="w-full bg-slate-950 border border-slate-700 p-4 rounded-xl text-white mb-4 focus:border-orange-500 outline-none transition-all">
+
+            <div id="withdrawal-status" class="mb-4"></div>
+
+            <button type="submit" class="w-full bg-white text-black font-black py-4 rounded-xl uppercase tracking-widest hover:bg-slate-200 transition-all">
+                Submit Withdrawal
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateFileName(input) {
+        const fileName = input.files[0] ? input.files[0].name : "Choose image...";
+        const display = document.getElementById('file-name');
+        display.innerText = fileName;
+        display.classList.remove('text-slate-400');
+        display.classList.add('text-orange-500');
+    }
+</script>

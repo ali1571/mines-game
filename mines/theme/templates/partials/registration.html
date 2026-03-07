@@ -1,0 +1,27 @@
+<div id="game-overlay" hx-swap-oob="true" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50">
+    <form hx-post="{% url 'register' %}" hx-encoding="multipart/form-data"
+          class="bg-slate-900 p-8 rounded-3xl border border-slate-800 w-full max-w-lg shadow-2xl">
+        <h2 class="text-2xl font-black mb-6">Create Account & Verify CNIC</h2>
+
+        <div class="grid grid-cols-2 gap-4 text-sm">
+            <input type="text" name="username" placeholder="Username" class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+            <input type="password" name="password" placeholder="Password" class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+            <input type="text" name="first_name" placeholder="First Name" class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+            <input type="text" name="last_name" placeholder="Last Name" class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+            <input type="text" name="phone" placeholder="Phone Number" class="bg-slate-800 p-3 rounded-lg border border-slate-700 col-span-2">
+
+            <div class="col-span-2">
+                <label class="text-xs text-slate-500 uppercase font-bold">CNIC Photos (Front & Back)</label>
+                <div class="flex gap-2 mt-2">
+                    <input type="file" name="cnic_front" class="text-xs text-slate-400">
+                    <input type="file" name="cnic_back" class="text-xs text-slate-400">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="w-full mt-6 bg-orange-500 py-4 rounded-xl font-bold text-black flex items-center justify-center">
+            <span class="htmx-indicator animate-spin mr-2">🌀</span>
+            Submit for Verification
+        </button>
+    </form>
+</div>

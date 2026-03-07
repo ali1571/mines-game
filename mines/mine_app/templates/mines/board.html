@@ -1,0 +1,171 @@
+
+<style>
+    /* Hide number input arrows (spinners) */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield; /* Firefox fix */
+    }
+</style>
+
+<style>
+    @keyframes pop-in {
+        0% { transform: scale(0.5); opacity: 0; }
+        70% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+        animation: pop-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+</style>
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="flex flex-col lg:flex-row gap-3 lg:gap-8 max-w-5xl mx-auto pt-4 pb-10 px-4">
+
+    <div class="w-full lg:w-1/3 bg-slate-900 p-2 rounded-2xl border border-slate-800 shadow-xl h-fit">
+
+        <div class="space-y-2">
+            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest ml-1">bet rupees</label>
+
+            <div class="relative">
+                <input type="number"
+                       name="bet_amount"
+                       id="bet_amount"
+                       step="0.01"
+                       value="80.00"
+                       hx-on:input="document.getElementById('bet-error').innerHTML = ''"
+                       class="w-full bg-slate-950 border border-slate-700 rounded-xl py-2.5 px-4 text-white font-mono focus:border-orange-500 focus:ring-1 focus:ring-orange-500 outline-none transition-all"
+                       placeholder="0.00">
+                <span class="absolute right-2 top-1/2 -translate-y-1/2
+             bg-orange-500/10 text-orange-500 border border-orange-500/20
+             px-2 py-1 rounded-md
+             font-bold text-[10px] uppercase tracking-wider
+             pointer-events-none">
+                    PKR
+                </span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2">
+                <button type="button"
+                        onclick="let val = document.getElementById('bet_amount'); val.value = 20; val.dispatchEvent(new Event('input'))"
+                        class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold py-2 rounded-lg transition-colors border border-slate-700/50">
+                    MIN
+                </button>
+                <button type="button"
+                    onclick="
+                        let input = document.getElementById('bet_amount');
+                        let error = document.getElementById('bet-error');
+                        let newValue = (input.value / 2).toFixed(2);
+
+                        if (newValue < 20) {
+                            error.innerHTML = '<span>Minimum bet is 20 PKR</span>';
+                        } else {
+                            input.value = newValue;
+                            error.innerHTML = '';
+                        }
+                        input.dispatchEvent(new Event('input'));
+                    "
+                    class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold py-2 rounded-lg transition-colors border border-slate-700/50">
+                1/2
+            </button>
+                <button type="button"
+                        onclick="
+                            let input = document.getElementById('bet_amount');
+                            document.getElementById('bet-error').innerHTML = ''; // Clear error
+                            input.value = (input.value * 2).toFixed(2);
+                            input.dispatchEvent(new Event('input'));
+                        "
+                        class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold py-2 rounded-lg transition-colors border border-slate-700/50">
+                    2X
+                </button>
+                <button type="button"
+                        onclick="let val = document.getElementById('bet_amount'); let bal = document.getElementById('user-balance'); val.value = bal ? parseFloat(bal.innerText) : {{ request.user.usdt_balance }}; val.dispatchEvent(new Event('input'))"
+                        class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold py-2 rounded-lg transition-colors border border-slate-700/50">
+                    MAX
+                </button>
+            </div>
+
+            <div id="bet-error"  class="empty:hidden flex items-center gap-2 bg-red-500/10 border-l-4 border-red-500 text-red-400 text-xs font-medium px-3 py-2 rounded-r-lg mt-2 transition-all"></div>
+        </div>
+
+
+
+        <div id="button-container" class="mt-6">
+            {% if restored_game %}
+                <button hx-post="{% url 'cashout' %}"
+                        hx-target="#game-grid"
+                        hx-swap="outerHTML"
+                        class="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-black rounded-xl transition-all shadow-[0_4px_0_rgb(4,120,87)] active:shadow-none active:translate-y-1 uppercase flex justify-center items-center gap-2">
+                    <span class="text-center">Cash Out</span>
+                </button>
+            {% else %}
+                <button hx-post="{% url 'start_game' %}"
+                        hx-include="#bet_amount"
+                        hx-headers='{"Cache-Control": "no-cache"}'
+                        hx-target="#game-grid"
+                        hx-indicator="#spinner"
+                        class="w-full py-2 bg-orange-500 hover:bg-orange-400 text-black font-black rounded-xl transition-all shadow-[0_4px_0_rgb(194,120,3)] active:shadow-none active:translate-y-1 uppercase flex justify-center items-center gap-2">
+                    <span id="spinner" class="htmx-indicator absolute left-6 animate-spin border-2 border-black border-t-transparent rounded-full h-4 w-4"></span>
+                    <span class="text-center">Play</span>
+                </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="cashout-display" class="lg:hidden">
+        <div class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.2em] text-center py-2">
+            Ready to play
+        </div>
+    </div>
+
+    <div class="flex-1 bg-slate-950 p-6 rounded-3xl border border-slate-900 shadow-inner flex justify-center items-center">
+        <div id="game-grid" class="grid grid-cols-3 gap-3 md:gap-4 w-full max-w-[320px]">
+            {% if restored_game %}
+                {% for i in range %}
+                    <div id="tile-{{ i }}" class="relative w-full aspect-square bg-slate-800 rounded-xl flex items-center justify-center overflow-hidden border border-slate-700/50 shadow-inner">
+                        {% if i in revealed_tiles %}
+                            <div class="absolute inset-0 bg-emerald-500/30 flex items-center justify-center animate-pop">
+                                <span class="text-2xl">💎</span>
+                            </div>
+                        {% else %}
+                            <button hx-post="{% url 'reveal_tile' i %}"
+                                    hx-target="#tile-{{ i }}"
+                                    hx-swap="innerHTML"
+                                    class="w-full h-full hover:bg-slate-700 transition-all active:scale-90 flex items-center justify-center">
+                            </button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                {% for i in range %}
+                    <div class="group w-full aspect-square bg-slate-800/40 rounded-xl border border-slate-700/50 flex items-center justify-center transition-all">
+                        <div class="w-2 h-2 bg-slate-700 rounded-full group-hover:bg-orange-500/50 transition-colors"></div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+<button hx-get="{% url 'wallet_modal' %}"
+        hx-target="#game-overlay"
+        hx-swap="innerHTML">
+    $ {{ user.usdt_balance|floatformat:2 }}
+</button>

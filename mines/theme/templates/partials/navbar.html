@@ -1,0 +1,42 @@
+<nav class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center">
+        <a href="/" class="text-2xl font-black tracking-tighter text-orange-500">
+            MINES<span class="text-white font-light">PRO</span>
+        </a>
+    </div>
+
+    <div class="flex items-center space-x-6">
+
+        <button hx-get="{% url 'wallet_modal' %}"
+                hx-target="#game-overlay"
+                hx-swap="innerHTML"
+                hx-on::error="console.log('Target missing, trying fallback...'); htmx.ajax('GET', '{% url 'wallet_modal' %}', {target:'body', swap:'beforeend'})"
+                class="text-white font-bold">
+            $ {{ user.usdt_balance|floatformat:2 }}
+        </button>
+
+        <div id="auth-section">
+            {% if not user.is_authenticated %}
+                <button hx-get="{% url 'login_view' %}"
+                        hx-target="#game-overlay"
+                        class="text-xs font-bold text-white bg-orange-600 px-3 py-2 rounded-lg">
+                    Login
+                </button>
+            {% else %}
+                    <div class="flex items-center gap-4">
+                        {% if user.is_verified %}
+                            <span class="text-emerald-500 text-xs font-bold ring-1 ring-emerald-500/30 px-2 py-1 rounded">VERIFIED</span>
+                        {% else %}
+                            <span class="text-yellow-500 text-xs font-bold animate-pulse">PENDING</span>
+                        {% endif %}
+
+                        <button hx-post="{% url 'logout' %}"
+                                hx-trigger="click"
+                                class="bg-slate-800 hover:bg-red-900/40 text-red-500 border border-red-900/50 px-4 py-2 rounded-lg text-xs font-black uppercase transition-all">
+                            Logout
+                        </button>
+                    </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>

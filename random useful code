@@ -1,0 +1,19 @@
+switching max to hardcoded 300.
+following code was previously when current balance in your wallet cud be the max
+
+<button type="button"
+                        onclick="let balanceEl = document.getElementById('user-balance'); let val = document.getElementById('bet_amount'); val.value = parseFloat(balanceEl.textContent); val.dispatchEvent(new Event('input'))"
+                        class="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold py-2 rounded-lg transition-colors border border-slate-700/50">
+                    MAX
+                </button>
+
+----------------------------------------------
+
+
+UPDATES:
+cashout smaller
+fix max to be users total balance
+if max is users current balance it cannot be doubled.
+kyc should work but abhi comment out
+withdrawal button should take u to whatsapp with your number as the message
+so if u reload during the game, u lose ur money

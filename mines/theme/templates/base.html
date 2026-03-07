@@ -1,0 +1,49 @@
+<div class="hidden sm:block bg-yellow-500 text-black p-2 text-center font-mono">
+    User: {{ request.user }} |
+    Auth: {{ request.user.is_authenticated }} |
+    Session: {{ request.session.session_key }}
+</div>
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MINE PRO</title>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="{% static 'favicon/favicon.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+    <body class="bg-slate-950 text-white font-sans min-h-screen"
+          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+        <!-- Game overlay - must exist before any HTMX requests -->
+        <div id="game-overlay"></div>
+
+        {% include 'mines/partials/navbar.html' %}
+
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <audio id="sound-gem" src="/static/audio/gem3.wav" preload="auto"></audio>
+        <audio id="sound-mine" src="/static/audio/mine1.wav" preload="auto"></audio>
+        <audio id="sound-win" src="/static/audio/cashoutwinsound.mp3" preload="auto"></audio>
+
+        <script>
+            document.body.addEventListener('htmx:configRequest', (event) => {
+                event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+            });
+
+            // Debug: Log when overlay is found
+            document.addEventListener('DOMContentLoaded', function() {
+                const overlay = document.getElementById('game-overlay');
+                console.log('Overlay element:', overlay);
+                if (!overlay) {
+                    console.error('game-overlay not found!');
+                }
+            });
+        </script>
+    </body>
+</html>

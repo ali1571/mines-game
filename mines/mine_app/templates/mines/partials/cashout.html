@@ -1,0 +1,25 @@
+<div id="cashout-display" hx-swap-oob="true" class="w-full py-4 text-center">
+    {% if game_active %}
+        <div class="flex justify-around items-center bg-slate-900/50 border border-slate-800 rounded-2xl p-4">
+            <div class="flex flex-col">
+                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Current Payout</span>
+                <span class="text-xl font-black text-white">
+                    {{ current_payout|floatformat:0 }} <span class="text-xs text-orange-500">PKR</span>
+                </span>
+            </div>
+
+            <div class="h-8 border-r border-slate-800"></div>
+
+            <div class="flex flex-col">
+                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Next Tile</span>
+                <span class="text-xl font-black text-emerald-500">
+                    x{{ next_multiplier }}
+                </span>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.2em]">
+            Select your bet to start
+        </div>
+    {% endif %}
+</div>
