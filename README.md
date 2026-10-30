@@ -19,7 +19,7 @@ A real-time, server-rendered 3x3 Mines strategy game built with Django, HTMX, an
 
 🛠️ Tech Stack
 
-    Backend: Python 3.10+, Django 4.2+
+    Backend: Python 3.10+, Django 5
 
     Frontend: HTMX, Tailwind CSS
 
